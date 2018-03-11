@@ -1,0 +1,52 @@
+body {
+    background-color: deepskyblue;
+}
+
+.container {
+    background-color: #EEE;
+}
+
+.nav    {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav li {
+    float: left;
+    display: block;
+    padding: 10px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+#profile-information {
+    float: left;
+    margin-right: 10em;
+}
+
+
+.fa-trash-o {
+    
+    color: red;
+}
+
+label {
+    width: 8em;
+}
+
+.error {
+    color: red;
+    font-weight: bolder;
+    margin-bottom: 1em;
+    display: inline-block;
+}
+
+.success {
+    color: green;
+    font-weight: bolder;
+    margin-bottom: 1em;
+    display: inline-block;
+}
