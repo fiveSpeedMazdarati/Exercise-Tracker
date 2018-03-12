@@ -51,8 +51,6 @@
             $data = mysqli_query($dbc, $query)
                     or die("Error querying database.");
             
-            echo "Calories burned for this exercise: " . round(calculate_calorie_burn(37, 'male', 162, 121, 41));
-                    
         ?>
             <table class="table table-striped">
                 <tr><th class="thead-dark">Date</th><th>Duration</th><th>Heart Rate</th><th>Calories</th><th>Type of Exercise</th><th>Delete</th></tr>
