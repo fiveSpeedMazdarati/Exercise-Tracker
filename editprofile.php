@@ -29,11 +29,11 @@
             {
                 //echo "form submitted...<br />checking for empty fields...<br />";
                 // the user has submitted the form, so make sure all of the fields are filled in
-                if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['gender']) && !empty($_POST['weight']))
+                if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['gender']) && !empty($_POST['age']) && !empty($_POST['weight']))
                 {
-                    //echo "all fields filled in...<br />checking that weight is numeric...<br />";
-                    // all fields are filled in, check that weight is numeric
-                    if (is_numeric($_POST['weight']))
+                    //echo "all fields filled in...<br />checking that weight and age are numeric...<br />";
+                    // all fields are filled in, check that weight and age are numeric
+                    if (is_numeric($_POST['weight']) && is_numeric($_POST['weight']))
                     {
                         //echo "weight is a numeric value...<br />sanitizing inputs...<br />";
                         
@@ -41,6 +41,7 @@
                         $firstname = mysqli_real_escape_string($dbc, trim($_POST['firstname']));
                         $lastname = mysqli_real_escape_string($dbc, trim($_POST['lastname']));
                         $gender = mysqli_real_escape_string($dbc, trim($_POST['gender']));
+                        $age = mysqli_real_escape_string($dbc, trim($_POST['age']));
                         $weight = mysqli_real_escape_string($dbc, trim($_POST['weight']));
                         
                         //echo "Inputs after sanitizing:<br />";
@@ -49,7 +50,7 @@
                         
                         // insert the new values into the database
                         //echo "Your custom made query:<br />";
-                        $query = "UPDATE EXERCISE_USER SET firstname = '$firstname', lastname = '$lastname', gender = '$gender', weight = '$weight' WHERE id = '$id' LIMIT 1";
+                        $query = "UPDATE EXERCISE_USER SET firstname = '$firstname', lastname = '$lastname', gender = '$gender', weight = '$weight', age = '$age' WHERE id = '$id' LIMIT 1";
                         //echo $query;
                         
                         mysqli_query($dbc, $query)
@@ -60,7 +61,7 @@
                     } 
                     else 
                     {
-                        $error = "Weight must be a numeric value.";
+                        $error = "Weight and age must be numeric values.";
                     }
                     
                 }
@@ -83,7 +84,6 @@
     <div class="row">
         <div id="profile-information" class="col">
             <!-- display the php form validation message if the string is not empty -->
-            
             <?php 
                 if(!empty($error))
                 {
@@ -103,6 +103,8 @@
                 <input type="text" name="lastname" value="<?php echo $row['lastname']; ?>"/><br />
                 <label>Gender</label>
                 <input type="text" name="gender" value="<?php echo $row['gender']; ?>"/><br />
+                <label>Age</label>
+                <input type="text" name="age" value="<?php echo $row['age']; ?>"/><br />
                 <label>Weight</label>
                 <input type="text" name="weight" value="<?php echo $row['weight']; ?>"/><br />
                 <input type="submit" name="submit" value="Update Information" />

@@ -36,6 +36,7 @@
                 <tr><th>First Name</th><td><?php echo $row['firstname'] ?></td></tr>
                 <tr><th>Last Name</th><td><?php echo $row['lastname'] ?></td></tr>
                 <tr><th>Gender</th><td><?php echo $row['gender'] ?></td></tr>
+                <tr><th>Age</th><td><?php echo $row['age'] ?></td></tr>
                 <tr><th>Weight</th><td><?php echo $row['weight'] ?></td></tr>
             </table>
         </div>
@@ -46,7 +47,7 @@
             
             // clear out the query variable, put in a new query string
             $query = '';
-            $query = "SELECT * FROM EXERCISE_LOG WHERE EXERCISE_USER_id = '$id' LIMIT 15";
+            $query = "SELECT * FROM EXERCISE_LOG WHERE EXERCISE_USER_id = '$id' ORDER BY id DESC LIMIT 15";
             
             $data = mysqli_query($dbc, $query)
                     or die("Error querying database.");

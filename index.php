@@ -13,12 +13,13 @@
         $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
                 or die('Error connecting to MySQL server.');
 
-        $query = "SELECT * FROM EXERCISE_LOG LIMIT 15";
+        $query = "SELECT * FROM EXERCISE_LOG ORDER BY id DESC LIMIT 15";
             
         $data = mysqli_query($dbc, $query)
                 or die("Error querying database.");
                     
         ?>
+        <h2>Recent Exercise Logs</h2>
             <table class="table table-striped">
                 <tr><th class="thead-dark">Date</th><th>Duration</th><th>Heart Rate</th><th>Calories</th><th>Type of Exercise</th></tr>
             <?php 
