@@ -29,39 +29,44 @@
             {
                 //echo "form submitted...<br />checking for empty fields...<br />";
                 // the user has submitted the form, so make sure all of the fields are filled in
-                if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['gender']) && !empty($_POST['age']) && !empty($_POST['weight']))
+                if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['gender']) && !empty($_POST['birthdate']) && !empty($_POST['weight']))
                 {
                     //echo "all fields filled in...<br />checking that weight and age are numeric...<br />";
                     // all fields are filled in, check that weight and age are numeric
                     if (is_numeric($_POST['weight']) && is_numeric($_POST['weight']))
                     {
-                        //echo "weight is a numeric value...<br />sanitizing inputs...<br />";
-                        
-                        // all checks pass, sanitize the inputs from the $_POST array
-                        $firstname = mysqli_real_escape_string($dbc, trim($_POST['firstname']));
-                        $lastname = mysqli_real_escape_string($dbc, trim($_POST['lastname']));
-                        $gender = mysqli_real_escape_string($dbc, trim($_POST['gender']));
-                        $age = mysqli_real_escape_string($dbc, trim($_POST['age']));
-                        $weight = mysqli_real_escape_string($dbc, trim($_POST['weight']));
-                        
-                        //echo "Inputs after sanitizing:<br />";
-                        //echo "$firstname, $lastname, $gender, $weight<br />";
-                        
-                        
-                        // insert the new values into the database
-                        //echo "Your custom made query:<br />";
-                        $query = "UPDATE EXERCISE_USER SET firstname = '$firstname', lastname = '$lastname', gender = '$gender', weight = '$weight', age = '$age' WHERE id = '$id' LIMIT 1";
-                        //echo $query;
-                        
-                        mysqli_query($dbc, $query)
-                                or die("There was a problem updating the user information.");
-                        
-                        $updated = true;
-                        
+                        // all fields are filled in, now check the gender entry to make sure it's something useful
+                        if ($_POST['gender'] == 'M' || $_POST['gender'] == 'F' || $_POST['gender'] == 'male' || $_POST['gender'] == 'female')
+                        {
+                            
+                            // all checks pass, sanitize the inputs from the $_POST array
+                            $firstname = mysqli_real_escape_string($dbc, trim($_POST['firstname']));
+                            $lastname = mysqli_real_escape_string($dbc, trim($_POST['lastname']));
+                            $gender = mysqli_real_escape_string($dbc, trim($_POST['gender']));
+                            $birthdate = mysqli_real_escape_string($dbc, trim($_POST['birthdate']));
+                            $weight = mysqli_real_escape_string($dbc, trim($_POST['weight']));
+                            
+                            //echo "Inputs after sanitizing:<br />";
+                            //echo "$firstname, $lastname, $gender, $weight<br />";
+                            
+                            // insert the new values into the database
+                            //echo "Your custom made query:<br />";
+                            $query = "UPDATE EXERCISE_USER SET firstname = '$firstname', lastname = '$lastname', gender = '$gender', weight = '$weight', birthdate = '$birthdate' WHERE id = '$id' LIMIT 1";
+                            //echo $query;
+                            
+                            mysqli_query($dbc, $query)
+                                    or die("There was a problem updating the user information.");
+                            
+                            $updated = true;
+                            
+                        } else {
+                            
+                            $error = "Gender is invalid. Please use M,F, Female, or Male";
+                        }
                     } 
                     else 
                     {
-                        $error = "Weight and age must be numeric values.";
+                        $error = "Weight and be a numeric value.";
                     }
                     
                 }
@@ -96,6 +101,7 @@
             ?>
             
             <!-- Form to update the user info -->
+            <h2>Edit Your Profile</h2>
             <form enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <label>First Name:</label>
                 <input type="text" name="firstname" value="<?php echo $row['firstname']; ?>"/><br />
@@ -103,8 +109,8 @@
                 <input type="text" name="lastname" value="<?php echo $row['lastname']; ?>"/><br />
                 <label>Gender</label>
                 <input type="text" name="gender" value="<?php echo $row['gender']; ?>"/><br />
-                <label>Age</label>
-                <input type="text" name="age" value="<?php echo $row['age']; ?>"/><br />
+                <label>Birthdate<br />(YYYY-MM-DD)</label>
+                <input type="text" name="birthdate" value="<?php echo $row['birthdate']; ?>"/><br />
                 <label>Weight</label>
                 <input type="text" name="weight" value="<?php echo $row['weight']; ?>"/><br />
                 <input type="submit" name="submit" value="Update Information" />
@@ -130,14 +136,14 @@
                 {
             ?>
                 <tr>
-                  <td><?php echo $row['date'];; ?></td>
+                  <td><?php echo $row['date']; ?></td>
                   <td><?php echo $row['time_in_minutes']; ?> mins</td>
                   <td><?php echo $row['heartrate'];?> bpm</td>
                   <td><?php echo $row['calories'];?></td>
                   <td><?php echo $row['type'];?></td>
                   
                   <!-- TODO: create deleteexercise.php -->
-                  <td><a href="deleteexercise.php?id=<?php echo $row['id']; ?>"> <i class="fa fa-trash-o fa-lg"></i></a></td>
+                  <td><a href="deleteexercise.php?id=<?php echo $row['id']; ?>&referrer=editprofile.php"> <i class="fa fa-trash-o fa-lg"></i></a></td>
                 </tr>
             <?php
                 }

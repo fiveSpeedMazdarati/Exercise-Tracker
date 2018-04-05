@@ -2,11 +2,8 @@
     session_start();
     
     require_once('connectvars.php');
-    
     require_once('header.php');
-    
     require('navMenu.php');
-    
     require_once('functions.php');
 ?>
 <!-- This is where the profile information will be displayed, along with the information for the user's exercises -->
@@ -31,17 +28,17 @@
     ?>
     <div class="row">
         <div id="profile-information" class="col">
-            <span>Your Information</span>
+            <h2><span>Your Information</span></h2>
             <table class="table table-striped">
                 <tr><th>First Name</th><td><?php echo $row['firstname'] ?></td></tr>
                 <tr><th>Last Name</th><td><?php echo $row['lastname'] ?></td></tr>
                 <tr><th>Gender</th><td><?php echo $row['gender'] ?></td></tr>
-                <tr><th>Age</th><td><?php echo $row['age'] ?></td></tr>
+                <tr><th>Birthdate</th><td><?php echo $row['birthdate'] ?></td></tr>
                 <tr><th>Weight</th><td><?php echo $row['weight'] ?></td></tr>
             </table>
         </div>
         <div id="recent-exercises" class="col">
-            <span>Your Recent Entries</span>
+            <h2><span>Your Recent Entries</span></h2>
         
         <?php
             
@@ -66,7 +63,7 @@
                   <td><?php echo $row['heartrate'];?> bpm</td>
                   <td><?php echo $row['calories'];?></td>
                   <td><?php echo $row['type'];?></td>
-                  <td><a href="deleteexercise.php?id=<?php echo $row['id']; ?>"> <i class="fa fa-trash-o fa-lg"></i></a></td>
+                  <td><a href="deleteexercise.php?id=<?php echo $row['id']; ?>&referrer=viewprofile.php"> <i class="fa fa-trash-o fa-lg"></i></a></td>
                 </tr>
             <?php
                 }

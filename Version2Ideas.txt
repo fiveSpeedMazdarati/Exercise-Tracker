@@ -1,0 +1,10 @@
+Possible Enhancements:
+
+----
+auto-login after successful signup
+----
+forward to edit profile page after signup
+----
+ensure that a person without all of the fields filled in cannot create an exercise 
+since calorie burn will not calculate correctly without it
+

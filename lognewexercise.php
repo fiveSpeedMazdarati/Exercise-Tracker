@@ -25,7 +25,7 @@
                     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
                             or die('Error connecting to MySQL server.');
         
-                    $query = "select gender, weight, age from EXERCISE_USER where id = '$id'";
+                    $query = "select gender, weight, birthdate from EXERCISE_USER where id = '$id'";
                     
                     $result = mysqli_query($dbc, $query);
                     
@@ -37,9 +37,9 @@
                     
                     $gender = $data['gender'];
                     $weight = $data['weight'];
-                    $age = $data['age'];
+                    $birthdate = $data['birthdate'];
                     
-                    // echo "Gender: $gender  Weight: $weight <br />";
+                    $age = calculate_age($birthdate);
                     
                     $calorie_burn = calculate_calorie_burn($age, $gender, $weight, $heart_rate, $time);
                     
@@ -69,10 +69,11 @@
     
     ?>
     <!-- The new exercise form -->
+    <h2>Log a New Exercise</h2>
     <form enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-      <label for="time">Time:</label>
+      <label for="time">Duration (minutes):</label>
       <input type="text" name="time" value="<?php echo $time; ?>" /><br />
-      <label for="average_heart_rate">Heart Rate:</label>
+      <label for="average_heart_rate">Average Heart Rate:</label>
       <input type="text" name="average_heart_rate" value="<?php echo $heart_rate; ?>" /><br />
       <label for="exercise_type">Type of Exercise:</label>
         <select name="exercise_type">

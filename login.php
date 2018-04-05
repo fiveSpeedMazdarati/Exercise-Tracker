@@ -6,7 +6,7 @@
 
     // Clear the error message
     $error_msg = "";
- 
+
     // If the user isn't logged in, try to log them in
     if (!isset($_SESSION['user_id'])) {
         
@@ -19,36 +19,45 @@
             $user_username = mysqli_real_escape_string($dbc, trim($_POST['username']));
             $user_password = mysqli_real_escape_string($dbc, trim($_POST['password']));
 
-            if (!empty($user_username) && !empty($user_password)) 
-            {
-                // Look up the username and password in the database
-                $query = "SELECT id, username FROM EXERCISE_USER WHERE username = '$user_username' AND password = '$user_password'";
+            if (!empty($user_username) && !empty($user_password)) {
+                
+                // user filled in both required fields, so get the user info from the db
+                $query = "SELECT id, username, password FROM EXERCISE_USER WHERE username = '$user_username'";
                 $data = mysqli_query($dbc, $query)
                         or die("There was a problem querying the database.");
-
-                if (mysqli_num_rows($data) == 1) {
-                    // echo 'found exactly one match';
-                    // The log-in is OK so set the user ID and username session vars, and redirect to the home page
-                    $row = mysqli_fetch_array($data);
-    
-                    $_SESSION['user_id'] = $row['id'];
-                    $_SESSION['username'] = $row['username'];
-              
-                    $home_url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/index.php';
-                    header('Location: ' . $home_url);
-                } 
-                else 
-                {
-                    // The username/password are incorrect so set an error message
-                    $error_msg = 'Sorry, you must enter a valid username and password to log in.';
+                
+                $row = mysqli_fetch_array($data);
+                $hash = $row['password'];
+                
+                if (password_verify($user_password, $hash)) {
+                
+                    // passwords match, now check that there is only one user with this info
+                    if (mysqli_num_rows($data) == 1) {
+                        
+                        // there is only one user in the db with this information, so continue
+                        // The log-in is OK so set the user ID and username session vars, and redirect to the home page
+        
+                        $_SESSION['user_id'] = $row['id'];
+                        $_SESSION['username'] = $row['username'];
+                  
+                        $home_url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/index.php';
+                        header('Location: ' . $home_url);
+                    } else {
+                        // something is really wrong, because there are somehow two people with the same username
+                        $error_msg = 'There was an error. Please contact the system administrator. Reference Error Code: 51.';
+                    } 
+                    
+                } else {
+                    $error_msg = 'Sorry, your username and password combination is incorrect.';
                 }
-            }
-            else 
-            {
+            } else {
                 // The username/password weren't entered so set an error message
                 $error_msg = 'Sorry, you must enter your username and password to log in.';
             }
+        
+            mysqli_close($dbc);    
         }
+        
     }
 
     require_once('header.php');
@@ -57,15 +66,12 @@
   if (empty($_SESSION['user_id'])) {
     echo '<p class="error">' . $error_msg . '</p>';
 ?>
-
+<h2>Log In</h2>
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-    <fieldset>
-      <legend>Log In</legend>
       <label for="username">Username:</label>
       <input type="text" name="username" value="<?php if (!empty($user_username)) echo $user_username; ?>" /><br />
       <label for="password">Password:</label>
-      <input type="password" name="password" />
-    </fieldset>
+      <input type="password" name="password" /><br />
     <input type="submit" value="Log In" name="submit" />
   </form>
   

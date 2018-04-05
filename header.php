@@ -15,5 +15,6 @@
 </head>
 <body>
   <div class="container">
+  <img src="img/edited_cheeseburger.png" alt="Delicious Cheeseburger" width="100">
   <h3>Lose it!</h3>
   

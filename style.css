@@ -50,3 +50,7 @@ label {
     margin-bottom: 1em;
     display: inline-block;
 }
+
+img {
+    display: inline-block;
+}
